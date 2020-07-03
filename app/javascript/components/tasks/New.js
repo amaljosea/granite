@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import API from '../../utils/API';
-import * as Routes from '../../utils/Routes';
-
+import React, { Component } from "react";
+import API from "../../utils/API";
+import * as Routes from "../../utils/Routes";
 
 class New extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: '',
+      description: "",
+      message: null
     };
 
     this.onSubmit = this.onSubmit.bind(this);
@@ -17,8 +17,11 @@ class New extends Component {
   onSubmit(event) {
     event.preventDefault();
     API.postNewTask({ task: { description: this.state.description } })
-      .then(() => {
-        window.location.href = Routes.tasks_path();
+      .then(response => {
+        this.setState({ message: response.notice });
+        setTimeout(function() {
+          window.location.href = Routes.tasks_path();
+        }, 1000);
       })
       .catch(error => {
         if (error.text) {
@@ -31,7 +34,7 @@ class New extends Component {
 
   handleChange(event) {
     this.setState({
-      description: event.target.value,
+      description: event.target.value
     });
   }
 
@@ -62,19 +65,22 @@ class New extends Component {
           </div>
         </form>
       </div>
-    )
+    );
   }
 
   render() {
     return (
       <div className="container">
-        <div className="col-md-10 mx-auto pt-2">
-          {this.displayAddTaskForm()}
-        </div>
+        {this.state.message ? (
+          <div className="alert alert-success">{this.state.message}</div>
+        ) : (
+          <div className="col-md-10 mx-auto pt-2">
+            {this.displayAddTaskForm()}
+          </div>
+        )}
       </div>
     );
   }
 }
 
 export default New;
-
