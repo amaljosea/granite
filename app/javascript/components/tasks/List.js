@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import API from "../../utils/API";
+import * as Routes from "../../utils/Routes";
 
 const List = ({ tasks }) => {
   const displayTaskList = () => {
@@ -23,13 +25,22 @@ const List = ({ tasks }) => {
           )}
         </div>
       </div>
-    )
-  }
+    );
+  };
+
+  const displayAddNewTaskButton = () => {
+    return (
+      <a className="btn btn-primary" href={Routes.new_task_path()}>
+        Add New Task
+      </a>
+    );
+  };
 
   return (
     <div className="container">
-      <div className="pt-5">
-        {displayTaskList()}
+      <div className="row">
+        <div className="col-md-10">{displayTaskList()}</div>
+        <div className="col-md-2">{displayAddNewTaskButton()}</div>
       </div>
     </div>
   );
